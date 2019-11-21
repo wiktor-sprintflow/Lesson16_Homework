@@ -11,8 +11,10 @@ public class CompetitionApp {
             FileUtils.writeListToFile(sortByScore(players));
         } catch (IOException e) {
             System.err.println(e.getMessage());
-        } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-            System.err.println("Podaj imię, nazwisko u punkty oddzielone pojedyńczą spacją. Punkty muszą być wartością liczbową");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Podaj imię, nazwisko u punkty oddzielone spacją.");
+        } catch (NumberFormatException e) {
+            System.err.println("Punkty muszą być wartością liczbową");
         }
     }
 
@@ -24,17 +26,18 @@ public class CompetitionApp {
             System.out.println("Podaj wynik kolejnego gracza (lub stop):");
             playerInfo = scanner.nextLine();
 
-            if (!(playerInfo.equals("stop") || playerInfo.equals("STOP"))) {
-                String[] playerInfoArr = playerInfo.split(" ");
+            if (!(playerInfo.toUpperCase().equals("STOP"))) {
+                String[] playerInfoArr = playerInfo.split("\\s+");
                 players.add(new Player(playerInfoArr[0], playerInfoArr[1], Integer.parseInt(playerInfoArr[2])));
             }
-        } while (!(playerInfo.equals("stop") || playerInfo.equals("STOP")));
+        } while (!(playerInfo.toUpperCase().equals("STOP")));
+        scanner.close();
         return players;
     }
 
     private static List<Player> sortByScore(List<Player> players) {
-        ScoreComparator scoreComparator = new ScoreComparator();
-        Collections.sort(players, scoreComparator);
+        ScoreAndNameComparator comparator = new ScoreAndNameComparator();
+        Collections.sort(players, comparator);
         return players;
     }
 }

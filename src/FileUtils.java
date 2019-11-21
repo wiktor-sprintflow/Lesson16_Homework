@@ -13,9 +13,10 @@ class FileUtils {
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         for (int i = 0; i < list.size(); i++) {
             String player = list.get(i).toCsv();
-            bufferedWriter.write(String.valueOf(player));
+            bufferedWriter.write(player);
             bufferedWriter.newLine();
         }
         bufferedWriter.close();
+        fileWriter.close();
     }
 }
